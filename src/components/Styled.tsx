@@ -54,7 +54,7 @@ export const ColorInput = ({ label, className, control, name, ...inputProps }: C
       },
     },
   });
-  const [color, setColor] = useState<string>(field.value || '');
+  const [color, setColor] = useState<string>(field.value);
   return (
     <Field>
       <Label className="text-sm/6 font-medium">{label}</Label>

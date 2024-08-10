@@ -23,7 +23,7 @@ export default function EditForm({ open, yoyo, onSave, onCancel }: FormProps) {
       yoDiameter: yoyo?.diameter,
       yoWidth: yoyo?.width,
       yoGapWidth: yoyo?.gapWidth,
-      yoColor: yoyo?.color,
+      yoColor: yoyo?.color || '#000000',
     },
   });
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
