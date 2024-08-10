@@ -6,3 +6,11 @@ export interface CanvasProps {
   scale: number;
   yoyos: Yoyo[];
 }
+
+export type FormInputs = {
+  yoName: string;
+  yoDiameter: number;
+  yoWidth: number;
+  yoGapWidth: number;
+  yoColor: string;
+};

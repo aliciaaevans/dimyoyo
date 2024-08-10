@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { HexColorPicker } from 'react-colorful';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Yoyo, YoyoActionType } from '../types/Yoyo';
 import ModalDialog from './ModalDialog';
-import { StyledInput } from './Styled';
+import { ColorInput, StyledButton, StyledInput } from './FormFields';
+import { FormInputs } from '../types/Props';
 
 interface FormProps {
   open: boolean;
@@ -12,73 +12,70 @@ interface FormProps {
 }
 
 export default function EditForm({ open, yoyo, onSave, onCancel }: FormProps) {
-  const [yoId, setYoId] = useState<string>(yoyo?.id || '');
-  const [yoName, setYoName] = useState<string>(yoyo?.name || '');
-  const [yoDiameter, setYoDiameter] = useState<string>(`${yoyo?.diameter || ''}`);
-  const [yoWidth, setYoWidth] = useState<string>(`${yoyo?.width || ''}`);
-  const [yoGapWidth, setYoGapWidth] = useState<string>(`${yoyo?.gapWidth || ''}`);
-  const [yoColor, setYoColor] = useState<string>(yoyo?.color || '');
-
-  if (yoyo && yoId != yoyo?.id) {
-    setYoId(yoyo.id);
-    setYoName(yoyo.name);
-    setYoDiameter(`${yoyo?.diameter || ''}`);
-    setYoWidth(`${yoyo?.width || ''}`);
-    setYoGapWidth(`${yoyo?.gapWidth || ''}`);
-    setYoColor(yoyo.color);
-  } else if (!yoyo && yoId != '') {
-    setYoId('');
-    setYoName('');
-    setYoDiameter('');
-    setYoWidth('');
-    setYoGapWidth('');
-    setYoColor('#000000');
-  }
-
-  const saveYoyo = () => {
-    let id = yoId;
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      yoName: yoyo?.name,
+      yoDiameter: yoyo?.diameter,
+      yoWidth: yoyo?.width,
+      yoGapWidth: yoyo?.gapWidth,
+      yoColor: yoyo?.color || '#000000',
+    },
+  });
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
     let action = YoyoActionType.CHANGE;
-    if (yoId.length < 1) {
+    let id = yoyo?.id || '';
+    if (!yoyo || yoyo.id.length < 1) {
       id = crypto.randomUUID();
       action = YoyoActionType.ADD;
     }
     onSave(
       {
         id: id,
-        name: yoName,
-        diameter: parseFloat(yoDiameter) || 0,
-        width: parseFloat(yoWidth) || 0,
-        gapWidth: parseFloat(yoGapWidth) || 0,
-        color: yoColor,
+        name: data.yoName,
+        diameter: data.yoDiameter,
+        width: data.yoWidth,
+        gapWidth: data.yoGapWidth,
+        color: data.yoColor,
       },
       action
     );
-    setYoId(id);
   };
 
   return (
-    <ModalDialog title="Edit Yo-yo" open={open} onSave={saveYoyo} onCancel={onCancel}>
-      <form className="w-full max-w-md px-4">
-        <StyledInput label="Name" value={yoName} onChange={(e) => setYoName(e.target.value)} />
+    <ModalDialog title="Edit Yo-yo" open={open} onCancel={onCancel}>
+      <form className="w-full max-w-md px-4" onSubmit={handleSubmit(onSubmit)}>
+        <StyledInput label="Name" error={errors.yoName} fieldName="yoName" register={register} />
         <StyledInput
           label="Diameter (mm)"
           type="number"
           step="0.01"
           min="0.01"
-          value={yoDiameter}
-          onChange={(e) => setYoDiameter(e.target.value || '')}
+          error={errors.yoDiameter}
+          fieldName="yoDiameter"
+          register={register}
         />
-        <StyledInput label="Width (mm)" type="number" step="0.01" min="0.01" value={yoWidth} onChange={(e) => setYoWidth(e.target.value || '')} />
+        <StyledInput label="Width (mm)" type="number" step="0.01" min="0.01" error={errors.yoWidth} fieldName="yoWidth" register={register} />
         <StyledInput
           label="Gap Width (mm)"
           type="number"
           step="0.01"
           min="0.01"
-          value={yoGapWidth}
-          onChange={(e) => setYoGapWidth(e.target.value || '')}
+          error={errors.yoGapWidth}
+          fieldName="yoGapWidth"
+          register={register}
         />
-        <StyledInput label="Color" value={yoColor} onChange={(e) => setYoColor(e.target.value)} />
-        <HexColorPicker color={yoColor} onChange={setYoColor} />
+        <ColorInput label="Color" name="yoColor" control={control} />
+        <StyledButton data-autofocus className="mr-2" type="submit">
+          Save
+        </StyledButton>
+        <StyledButton className="mx-2" onClick={() => onCancel(false)}>
+          Cancel
+        </StyledButton>
       </form>
     </ModalDialog>
   );
