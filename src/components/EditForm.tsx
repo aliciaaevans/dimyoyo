@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Yoyo, YoyoActionType } from '../types/Yoyo';
 import ModalDialog from './ModalDialog';
-import { ColorInput, StyledButton, StyledInput } from './Styled';
+import { ColorInput, StyledButton, StyledInput } from './FormFields';
 import { FormInputs } from '../types/Props';
 
 interface FormProps {

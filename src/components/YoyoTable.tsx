@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Yoyo, YoyoAction, YoyoActionType } from '../types/Yoyo';
 import EditForm from './EditForm';
-import { StyledButton } from './Styled';
+import { StyledButton } from './FormFields';
 
 interface SelectionProps {
   dispatch: (action: YoyoAction) => void;
