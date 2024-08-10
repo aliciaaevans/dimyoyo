@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import Yoyo from '../types/Yoyo';
+import { Yoyo, YoyoAction, YoyoActionType } from '../types/Yoyo';
 import EditForm from './EditForm';
 import { StyledButton } from './Styled';
 
 interface SelectionProps {
-  updateYoyo: (yoyo: Yoyo) => void;
+  dispatch: (action: YoyoAction) => void;
   yoyos: Yoyo[];
 }
 
-const YoyoTable = ({ updateYoyo, yoyos }: SelectionProps) => {
+const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
   const [editing, setEditing] = useState<Yoyo | undefined>(undefined);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -57,6 +57,14 @@ const YoyoTable = ({ updateYoyo, yoyos }: SelectionProps) => {
                   >
                     Edit
                   </StyledButton>
+                  <StyledButton
+                    className="bg-red-500 hover:bg-red-700 ml-4"
+                    onClick={() => {
+                      dispatch({ type: YoyoActionType.DELETE, yoyo: yoyo });
+                    }}
+                  >
+                    Delete
+                  </StyledButton>
                 </td>
               </tr>
             ))}
@@ -66,9 +74,9 @@ const YoyoTable = ({ updateYoyo, yoyos }: SelectionProps) => {
       <EditForm
         open={open}
         yoyo={editing}
-        onSave={(yoyo: Yoyo) => {
+        onSave={(yoyo: Yoyo, type: YoyoActionType) => {
           setOpen(false);
-          updateYoyo(yoyo);
+          dispatch({ type: type, yoyo: yoyo });
           setEditing(undefined);
         }}
         onCancel={() => {

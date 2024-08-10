@@ -1,4 +1,4 @@
-import Yoyo from './Yoyo';
+import { Yoyo } from './Yoyo';
 
 export interface CanvasProps {
   width: number;
