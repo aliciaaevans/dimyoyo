@@ -16,11 +16,17 @@ export default function EditForm({ open, yoyo, onSave, onCancel }: FormProps) {
     register,
     handleSubmit,
     control,
-    reset,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm<FormInputs>({
+    defaultValues: {
+      yoName: yoyo?.name,
+      yoDiameter: yoyo?.diameter,
+      yoWidth: yoyo?.width,
+      yoGapWidth: yoyo?.gapWidth,
+      yoColor: yoyo?.color,
+    },
+  });
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    console.log(data);
     let action = YoyoActionType.CHANGE;
     let id = yoyo?.id || '';
     if (!yoyo || yoyo.id.length < 1) {
@@ -38,39 +44,27 @@ export default function EditForm({ open, yoyo, onSave, onCancel }: FormProps) {
       },
       action
     );
-    reset();
   };
 
   return (
     <ModalDialog title="Edit Yo-yo" open={open} onCancel={onCancel}>
       <form className="w-full max-w-md px-4" onSubmit={handleSubmit(onSubmit)}>
-        <StyledInput label="Name" defaultValue={yoyo?.name} error={errors.yoName} fieldName="yoName" register={register} />
+        <StyledInput label="Name" error={errors.yoName} fieldName="yoName" register={register} />
         <StyledInput
           label="Diameter (mm)"
           type="number"
           step="0.01"
           min="0.01"
-          defaultValue={yoyo?.diameter}
           error={errors.yoDiameter}
           fieldName="yoDiameter"
           register={register}
         />
-        <StyledInput
-          label="Width (mm)"
-          type="number"
-          step="0.01"
-          min="0.01"
-          defaultValue={yoyo?.width}
-          error={errors.yoWidth}
-          fieldName="yoWidth"
-          register={register}
-        />
+        <StyledInput label="Width (mm)" type="number" step="0.01" min="0.01" error={errors.yoWidth} fieldName="yoWidth" register={register} />
         <StyledInput
           label="Gap Width (mm)"
           type="number"
           step="0.01"
           min="0.01"
-          defaultValue={yoyo?.gapWidth}
           error={errors.yoGapWidth}
           fieldName="yoGapWidth"
           register={register}

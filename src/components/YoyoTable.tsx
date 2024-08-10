@@ -71,19 +71,21 @@ const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
         </tbody>
       </table>
 
-      <EditForm
-        open={open}
-        yoyo={editing}
-        onSave={(yoyo: Yoyo, type: YoyoActionType) => {
-          setOpen(false);
-          dispatch({ type: type, yoyo: yoyo });
-          setEditing(undefined);
-        }}
-        onCancel={() => {
-          setOpen(false);
-          setEditing(undefined);
-        }}
-      />
+      {open && (
+        <EditForm
+          open={open}
+          yoyo={editing}
+          onSave={(yoyo: Yoyo, type: YoyoActionType) => {
+            setOpen(false);
+            dispatch({ type: type, yoyo: yoyo });
+            setEditing(undefined);
+          }}
+          onCancel={() => {
+            setOpen(false);
+            setEditing(undefined);
+          }}
+        />
+      )}
     </>
   );
 };
