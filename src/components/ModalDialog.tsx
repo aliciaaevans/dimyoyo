@@ -1,15 +1,13 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import { StyledButton } from './Styled';
 import type { ComponentPropsWithoutRef } from 'react';
 
 interface DialogProps extends ComponentPropsWithoutRef<'div'> {
   title: string;
   open: boolean;
-  onSave?: () => void;
   onCancel: (value: boolean) => void;
 }
 
-export default function ModalDialog({ title, open, onSave, onCancel, children }: DialogProps) {
+export default function ModalDialog({ title, open, onCancel, children }: DialogProps) {
   // TODO: Update styles from this example
   return (
     <Dialog open={open} onClose={onCancel} className="relative z-10">
@@ -31,20 +29,6 @@ export default function ModalDialog({ title, open, onSave, onCancel, children }:
                 </DialogTitle>
               </div>
               {children}
-            </div>
-            <div className="px-4 py-3 sm:flex sm:flex-row sm:px-6">
-              <StyledButton
-                data-autofocus
-                className="mr-2"
-                onClick={() => {
-                  if (onSave) onSave();
-                }}
-              >
-                Save
-              </StyledButton>
-              <StyledButton className="mx-2" onClick={() => onCancel(false)}>
-                Cancel
-              </StyledButton>
             </div>
           </DialogPanel>
         </div>
