@@ -21,7 +21,7 @@ interface StyledInputProps extends ComponentPropsWithoutRef<'input'> {
 
 export const StyledInput = ({ label, fieldName, register, error, className, min, type, ...inputProps }: StyledInputProps) => {
   return (
-    <Field>
+    <Field className=" mb-4">
       <Label className="text-sm/6 font-medium">{label}</Label>
       <Input
         className={`mt-3 block w-full rounded-lg border border-gray-300 py-1.5 px-3 text-sm/6 data-[focus]:outline-2 data-[focus]:-outline-offset data-[focus]:outline-gray-500 ${className}`}
@@ -32,7 +32,7 @@ export const StyledInput = ({ label, fieldName, register, error, className, min,
         type={type}
         {...inputProps}
       />
-      {error && <Description className="text-red-600">{error.message}</Description>}
+      {error && <Description className="text-red-600 mb-4">{error.message}</Description>}
     </Field>
   );
 };
@@ -56,10 +56,10 @@ export const ColorInput = ({ label, className, control, name, ...inputProps }: C
   });
   const [color, setColor] = useState<string>(field.value);
   return (
-    <Field>
+    <Field className=" mb-4">
       <Label className="text-sm/6 font-medium">{label}</Label>
       <Input
-        className={`mt-3 block w-full rounded-lg border border-gray-300 py-1.5 px-3 text-sm/6 data-[focus]:outline-2 data-[focus]:-outline-offset data-[focus]:outline-gray-500 ${className}`}
+        className={`mb-3 mt-3 block w-full rounded-lg border border-gray-300 py-1.5 px-3 text-sm/6 data-[focus]:outline-2 data-[focus]:-outline-offset data-[focus]:outline-gray-500 ${className}`}
         value={color}
         onChange={(e) => {
           setColor(e.target.value);
