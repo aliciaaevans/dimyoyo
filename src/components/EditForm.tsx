@@ -1,9 +1,7 @@
-import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { HexColorPicker } from 'react-colorful';
 import { Yoyo, YoyoActionType } from '../types/Yoyo';
 import ModalDialog from './ModalDialog';
-import { StyledButton, StyledInput } from './Styled';
+import { ColorInput, StyledButton, StyledInput } from './Styled';
 import { FormInputs } from '../types/Props';
 
 interface FormProps {
@@ -14,31 +12,33 @@ interface FormProps {
 }
 
 export default function EditForm({ open, yoyo, onSave, onCancel }: FormProps) {
-  const [yoColor, setYoColor] = useState<string>(yoyo?.color || '#FF0000');
   const {
     register,
     handleSubmit,
+    control,
+    reset,
     formState: { errors },
   } = useForm<FormInputs>();
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     console.log(data);
-    // let id = yoId;
-    // let action = YoyoActionType.CHANGE;
-    // if (yoId.length < 1) {
-    //   id = crypto.randomUUID();
-    //   action = YoyoActionType.ADD;
-    // }
-    // onSave(
-    //   {
-    //     id: id,
-    //     name: yoName,
-    //     diameter: parseFloat(yoDiameter) || 0,
-    //     width: parseFloat(yoWidth) || 0,
-    //     gapWidth: parseFloat(yoGapWidth) || 0,
-    //     color: yoColor,
-    //   },
-    //   action
-    // );
+    let action = YoyoActionType.CHANGE;
+    let id = yoyo?.id || '';
+    if (!yoyo || yoyo.id.length < 1) {
+      id = crypto.randomUUID();
+      action = YoyoActionType.ADD;
+    }
+    onSave(
+      {
+        id: id,
+        name: data.yoName,
+        diameter: data.yoDiameter,
+        width: data.yoWidth,
+        gapWidth: data.yoGapWidth,
+        color: data.yoColor,
+      },
+      action
+    );
+    reset();
   };
 
   return (
@@ -75,8 +75,7 @@ export default function EditForm({ open, yoyo, onSave, onCancel }: FormProps) {
           fieldName="yoGapWidth"
           register={register}
         />
-        <StyledInput label="Color" defaultValue={yoColor} error={errors.yoColor} fieldName="yoColor" register={register} />
-        <HexColorPicker color={yoColor} onChange={setYoColor} />
+        <ColorInput label="Color" name="yoColor" control={control} />
         <StyledButton data-autofocus className="mr-2" type="submit">
           Save
         </StyledButton>
