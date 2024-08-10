@@ -57,6 +57,14 @@ const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
                   >
                     Edit
                   </StyledButton>
+                  <StyledButton
+                    className="bg-red-500 hover:bg-red-700 ml-4"
+                    onClick={() => {
+                      dispatch({ type: YoyoActionType.DELETE, yoyo: yoyo });
+                    }}
+                  >
+                    Delete
+                  </StyledButton>
                 </td>
               </tr>
             ))}
