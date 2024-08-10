@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
-import Yoyo from '../types/Yoyo';
+import { Yoyo, YoyoActionType } from '../types/Yoyo';
 import ModalDialog from './ModalDialog';
 import { StyledInput } from './Styled';
 
 interface FormProps {
   open: boolean;
   yoyo?: Yoyo;
-  onSave: (yoyo: Yoyo) => void;
+  onSave: (yoyo: Yoyo, type: YoyoActionType) => void;
   onCancel: (value: boolean) => void;
 }
 
@@ -36,15 +36,23 @@ export default function EditForm({ open, yoyo, onSave, onCancel }: FormProps) {
   }
 
   const saveYoyo = () => {
-    const id = yoId.length < 1 ? crypto.randomUUID() : yoId;
-    onSave({
-      id: id,
-      name: yoName,
-      diameter: parseFloat(yoDiameter) || 0,
-      width: parseFloat(yoWidth) || 0,
-      gapWidth: parseFloat(yoGapWidth) || 0,
-      color: yoColor,
-    });
+    let id = yoId;
+    let action = YoyoActionType.CHANGE;
+    if (yoId.length < 1) {
+      id = crypto.randomUUID();
+      action = YoyoActionType.ADD;
+    }
+    onSave(
+      {
+        id: id,
+        name: yoName,
+        diameter: parseFloat(yoDiameter) || 0,
+        width: parseFloat(yoWidth) || 0,
+        gapWidth: parseFloat(yoGapWidth) || 0,
+        color: yoColor,
+      },
+      action
+    );
     setYoId(id);
   };
 

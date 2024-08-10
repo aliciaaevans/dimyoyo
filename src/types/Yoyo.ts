@@ -1,4 +1,4 @@
-interface Yoyo {
+export interface Yoyo {
   url?: string;
   handle?: string;
   id: string;
@@ -9,4 +9,14 @@ interface Yoyo {
   color: string;
 }
 
-export default Yoyo;
+export enum YoyoActionType {
+  ADD = 'ADD',
+  DELETE = 'DELETE',
+  CHANGE = 'CHANGE',
+}
+
+// An interface for our actions
+export interface YoyoAction {
+  type: YoyoActionType;
+  yoyo: Yoyo;
+}
