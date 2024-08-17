@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from 'react';
 
-const useCanvasWidth = () => {
-  const canvasWidth = useSyncExternalStore(subscribe, getSnapshot);
-  return canvasWidth;
+const useWindowWidth = () => {
+  const width = useSyncExternalStore(subscribe, getSnapshot);
+  return width;
 };
 
 const getSnapshot = () => {
@@ -16,4 +16,4 @@ const subscribe = (callback: () => void) => {
   };
 };
 
-export default useCanvasWidth;
+export default useWindowWidth;

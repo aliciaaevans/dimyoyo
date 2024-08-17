@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import DiameterView from './DiameterView';
 import WidthView from './WidthView';
 import { Yoyo } from '../types/Yoyo';
-import useCanvasWidth from '../hooks/useCanvasWidth';
+import useWindowWidth from '../hooks/useWindowWidth';
 
 interface DimensionViewProps {
   yoyos: Yoyo[];
@@ -14,7 +14,7 @@ const DimensionViews = ({ yoyos }: DimensionViewProps) => {
 
   const diaDivRef = useRef<HTMLDivElement>(null);
 
-  const windowWidth = useCanvasWidth();
+  const windowWidth = useWindowWidth();
 
   useEffect(() => {
     if (diaDivRef && diaDivRef.current) setWidth(diaDivRef.current.clientWidth);
