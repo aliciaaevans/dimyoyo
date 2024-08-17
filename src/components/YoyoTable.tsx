@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { TrashIcon, PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { Yoyo, YoyoAction, YoyoActionType } from '../types/Yoyo';
 import EditForm from './EditForm';
-import { StyledButton } from './FormFields';
+import { StyledIconButton } from './FormFields';
 
 interface SelectionProps {
   dispatch: (action: YoyoAction) => void;
@@ -23,16 +24,17 @@ const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
             <th>Gap Width (mm)</th>
             <th>Color</th>
             <th>
-              <StyledButton
-                className="ml-4"
+              <StyledIconButton
                 data-autofocus
+                label="Add"
+                color="blue"
                 onClick={() => {
                   setEditing(undefined);
                   setOpen(true);
                 }}
               >
-                Add
-              </StyledButton>
+                <PlusIcon width={24} height={24} />
+              </StyledIconButton>
             </th>
           </tr>
         </thead>
@@ -48,23 +50,25 @@ const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
                   <div style={{ backgroundColor: yoyo.color }}>&nbsp;</div>
                 </td>
                 <td>
-                  <StyledButton
-                    className="ml-4"
+                  <StyledIconButton
+                    label="Edit"
+                    color="blue"
                     onClick={() => {
                       setEditing(yoyo);
                       setOpen(true);
                     }}
                   >
-                    Edit
-                  </StyledButton>
-                  <StyledButton
-                    className="bg-red-500 hover:bg-red-700 ml-4"
+                    <PencilIcon width={24} height={24} />
+                  </StyledIconButton>
+                  <StyledIconButton
+                    label="Delete"
+                    color="red"
                     onClick={() => {
                       dispatch({ type: YoyoActionType.DELETE, yoyo: yoyo });
                     }}
                   >
-                    Delete
-                  </StyledButton>
+                    <TrashIcon className="text-red-700" width={24} height={24} />
+                  </StyledIconButton>
                 </td>
               </tr>
             ))}

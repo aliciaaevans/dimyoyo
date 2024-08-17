@@ -6,8 +6,28 @@ import { HexColorPicker } from 'react-colorful';
 
 export const StyledButton = ({ children, className, ...buttonProps }: ComponentPropsWithoutRef<'button'>) => {
   return (
-    <Button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${className}`} {...buttonProps}>
+    <Button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${className || ''}`} {...buttonProps}>
       {children}
+    </Button>
+  );
+};
+
+interface StyledIconButtonProps extends ComponentPropsWithoutRef<'button'> {
+  label: string;
+  color: 'blue' | 'red';
+}
+export const StyledIconButton = ({ label, color, children, className, ...buttonProps }: StyledIconButtonProps) => {
+  return (
+    <Button
+      aria-label={label}
+      title={label}
+      className={`bg-transparent md:my-1 md:px-3 md:py-2 md:bg-${color}-300 hover:bg-${color}-200 text-${color}-500 hover:outline ml-4 font-bold rounded inline-flex items-center ${
+        className || ''
+      }`}
+      {...buttonProps}
+    >
+      {children}
+      <span className="hidden md:inline">{label}</span>
     </Button>
   );
 };
