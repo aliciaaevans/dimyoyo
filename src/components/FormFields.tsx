@@ -21,13 +21,13 @@ export const StyledIconButton = ({ label, color, children, className, ...buttonP
     <Button
       aria-label={label}
       title={label}
-      className={`bg-transparent md:my-1 md:px-3 md:py-2 md:bg-${color}-300 hover:bg-${color}-200 text-${color}-500 hover:outline ml-4 font-bold rounded inline-flex items-center ${
+      className={`bg-transparent lg:bg-${color}-500 hover:bg-${color}-200 text-${color}-500 lg:text-white lg:my-1 lg:px-3 lg:py-2 hover:outline space-x-2 font-bold rounded inline-flex items-center ${
         className || ''
       }`}
       {...buttonProps}
     >
       {children}
-      <span className="hidden md:inline">{label}</span>
+      <span className="hidden lg:inline">{label}</span>
     </Button>
   );
 };

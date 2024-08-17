@@ -15,7 +15,7 @@ const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
 
   return (
     <>
-      <table className="table-auto w-2/3 my-8 mx-auto">
+      <table className="table-auto w-10/12 my-8 mx-auto border-separate border-spacing-2 text-xs md:text-base xl:text-lg">
         <thead>
           <tr className="border-b border-b-slate-300 text-left">
             <th>Name</th>
@@ -49,7 +49,7 @@ const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
                 <td>
                   <div style={{ backgroundColor: yoyo.color }}>&nbsp;</div>
                 </td>
-                <td>
+                <td className="flex-row lg:space-x-2">
                   <StyledIconButton
                     label="Edit"
                     color="blue"
@@ -67,7 +67,7 @@ const YoyoTable = ({ dispatch, yoyos }: SelectionProps) => {
                       dispatch({ type: YoyoActionType.DELETE, yoyo: yoyo });
                     }}
                   >
-                    <TrashIcon className="text-red-700" width={24} height={24} />
+                    <TrashIcon className="text-red-700 lg:text-white" width={24} height={24} />
                   </StyledIconButton>
                 </td>
               </tr>
