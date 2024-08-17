@@ -6,7 +6,7 @@ https://aliciaaevans.github.io/dimyoyo/
 
 To use, Add a yo-yo to the list, setting diameter, width, and gap width in milimeters. Then, select a color and Save.
 
-Note, in version 0.1 refreshing the webpage empties the list.
+If you do not opt-in to local browser storage, refreshing the webpage empties the list.
 
 
 ---
