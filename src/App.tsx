@@ -1,38 +1,25 @@
-import { Reducer, useReducer } from 'react';
+import { Field, Label, Switch } from '@headlessui/react';
 import DimensionViews from './components/DimensionViews';
 import YoyoTable from './components/YoyoTable';
-import { Yoyo, YoyoAction, YoyoActionType } from './types/Yoyo';
-
-const yoyoReducer = (state: Yoyo[], action: YoyoAction) => {
-  const yoyos = state;
-  const yoyo = action.yoyo;
-  switch (action.type) {
-    case YoyoActionType.ADD: {
-      return [...yoyos, yoyo];
-    }
-    case YoyoActionType.CHANGE: {
-      return yoyos.map((t) => {
-        if (t.id === yoyo.id) {
-          return yoyo;
-        } else {
-          return t;
-        }
-      });
-    }
-    case YoyoActionType.DELETE: {
-      return yoyos.filter((t) => t.id !== yoyo.id);
-    }
-    default: {
-      throw Error('Unknown action: ' + action.type);
-    }
-  }
-};
+import useYoyoReducer from './hooks/useYoyoReducer';
+import useStoreLocally from './hooks/useStoreLocally';
 
 function App() {
-  const [yoyos, dispatch] = useReducer<Reducer<Yoyo[], YoyoAction>>(yoyoReducer, []);
+  const [storeLocally, setStoreLocally] = useStoreLocally();
+  const [yoyos, dispatch] = useYoyoReducer(storeLocally);
 
   return (
     <>
+      <Field>
+        <Switch
+          checked={storeLocally}
+          onChange={setStoreLocally}
+          className="ml-4 mt-4 mr-2 group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-500"
+        >
+          <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
+        </Switch>
+        <Label>Save to browser</Label>
+      </Field>
       <h1 className="text-2xl font-bold text-center mt-4">🪀 DimYoyo: Yo-yo Dimension Comparison Tool 🪀</h1>
       <YoyoTable dispatch={dispatch} yoyos={yoyos} />
       <DimensionViews yoyos={yoyos}></DimensionViews>

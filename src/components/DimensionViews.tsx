@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import DiameterView from './DiameterView';
 import WidthView from './WidthView';
 import { Yoyo } from '../types/Yoyo';
+import useWindowWidth from '../hooks/useWindowWidth';
 
 interface DimensionViewProps {
   yoyos: Yoyo[];
@@ -9,11 +10,15 @@ interface DimensionViewProps {
 
 const DimensionViews = ({ yoyos }: DimensionViewProps) => {
   const [scale, setScale] = useState<number>(100);
+  const [width, setWidth] = useState<number>(300);
 
   const diaDivRef = useRef<HTMLDivElement>(null);
-  const widDivRef = useRef<HTMLDivElement>(null);
-  const diaDim = diaDivRef.current?.clientWidth || 300;
-  const widthDim = widDivRef.current?.clientWidth || 300;
+
+  const windowWidth = useWindowWidth();
+
+  useEffect(() => {
+    if (diaDivRef && diaDivRef.current) setWidth(diaDivRef.current.clientWidth);
+  }, [diaDivRef, windowWidth]);
 
   return (
     <>
@@ -23,10 +28,10 @@ const DimensionViews = ({ yoyos }: DimensionViewProps) => {
       </label>
       <div className="flex flex-wrap items-stretch min-h-screen">
         <div className="w-full lg:w-1/2" ref={diaDivRef}>
-          <DiameterView width={diaDim} height={diaDim} scale={(scale * diaDim) / 100 / 100} yoyos={yoyos} />
+          <DiameterView width={width} height={width} scale={(scale * width) / 100 / 100} yoyos={yoyos} />
         </div>
-        <div className="w-full lg:w-1/2" ref={widDivRef}>
-          <WidthView width={widthDim} height={widthDim} scale={(scale * widthDim) / 100 / 100} yoyos={yoyos} />
+        <div className="w-full lg:w-1/2">
+          <WidthView width={width} height={width} scale={(scale * width) / 100 / 100} yoyos={yoyos} />
         </div>
       </div>
     </>
