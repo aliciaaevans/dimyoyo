@@ -1,7 +1,7 @@
 import { Reducer, useReducer } from 'react';
 import { Yoyo, YoyoAction, YoyoActionType } from '../types/Yoyo';
 
-const yoyoReducer = (state: Yoyo[], action: YoyoAction) => {
+const yoyoReducer = (state: Yoyo[], action: YoyoAction, store: boolean) => {
   const yoyos = state;
   const yoyo = action.yoyo;
   let result = [];
@@ -29,14 +29,15 @@ const yoyoReducer = (state: Yoyo[], action: YoyoAction) => {
     }
   }
 
-  localStorage.setItem('yoyos', JSON.stringify(result));
+  if (store) localStorage.setItem('yoyos', JSON.stringify(result));
   return result;
 };
 
-const useYoyoReducer = () => {
-  const yoyos = JSON.parse(localStorage.getItem('yoyos') || '[]');
+const useYoyoReducer = (store: boolean) => {
+  let yoyos = [];
+  if (store) yoyos = JSON.parse(localStorage.getItem('yoyos') || '[]');
 
-  return useReducer<Reducer<Yoyo[], YoyoAction>>(yoyoReducer, yoyos);
+  return useReducer<Reducer<Yoyo[], YoyoAction>>((state, action) => yoyoReducer(state, action, store), yoyos);
 };
 
 export default useYoyoReducer;
