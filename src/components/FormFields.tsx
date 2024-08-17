@@ -6,8 +6,28 @@ import { HexColorPicker } from 'react-colorful';
 
 export const StyledButton = ({ children, className, ...buttonProps }: ComponentPropsWithoutRef<'button'>) => {
   return (
-    <Button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${className}`} {...buttonProps}>
+    <Button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${className || ''}`} {...buttonProps}>
       {children}
+    </Button>
+  );
+};
+
+interface StyledIconButtonProps extends ComponentPropsWithoutRef<'button'> {
+  label: string;
+  color: 'blue' | 'red';
+}
+export const StyledIconButton = ({ label, color, children, className, ...buttonProps }: StyledIconButtonProps) => {
+  return (
+    <Button
+      aria-label={label}
+      title={label}
+      className={`bg-transparent lg:bg-${color}-500 hover:bg-${color}-200 text-${color}-500 lg:text-white lg:my-1 lg:px-3 lg:py-2 hover:outline space-x-2 font-bold rounded inline-flex items-center ${
+        className || ''
+      }`}
+      {...buttonProps}
+    >
+      {children}
+      <span className="hidden lg:inline">{label}</span>
     </Button>
   );
 };
@@ -21,10 +41,10 @@ interface StyledInputProps extends ComponentPropsWithoutRef<'input'> {
 
 export const StyledInput = ({ label, fieldName, register, error, className, min, type, ...inputProps }: StyledInputProps) => {
   return (
-    <Field className=" mb-4">
+    <Field className="mb-1 md:mb-4">
       <Label className="text-sm/6 font-medium">{label}</Label>
       <Input
-        className={`mt-3 block w-full rounded-lg border border-gray-300 py-1.5 px-3 text-sm/6 data-[focus]:outline-2 data-[focus]:-outline-offset data-[focus]:outline-gray-500 ${className}`}
+        className={`mt-1 md:mt-3 block w-full rounded-lg border border-gray-300 py-1.5 px-3 text-sm/6 data-[focus]:outline-2 data-[focus]:-outline-offset data-[focus]:outline-gray-500 ${className}`}
         {...register(fieldName, {
           required: { value: true, message: 'Field is required.' },
           min: min ? { value: min || 0, message: `Must be at least ${min}.` } : undefined,
@@ -32,7 +52,7 @@ export const StyledInput = ({ label, fieldName, register, error, className, min,
         type={type}
         {...inputProps}
       />
-      {error && <Description className="text-red-600 mb-4">{error.message}</Description>}
+      {error && <Description className="text-red-600 text-sm md:text-base mb-1 md:mb-4">{error.message}</Description>}
     </Field>
   );
 };
@@ -56,10 +76,10 @@ export const ColorInput = ({ label, className, control, name, ...inputProps }: C
   });
   const [color, setColor] = useState<string>(field.value);
   return (
-    <Field className=" mb-4">
+    <Field className="mb-1 md:mb-4">
       <Label className="text-sm/6 font-medium">{label}</Label>
       <Input
-        className={`mb-3 mt-3 block w-full rounded-lg border border-gray-300 py-1.5 px-3 text-sm/6 data-[focus]:outline-2 data-[focus]:-outline-offset data-[focus]:outline-gray-500 ${className}`}
+        className={`my-1 md:my-3 block w-full rounded-lg border border-gray-300 py-1.5 px-3 text-sm/6 data-[focus]:outline-2 data-[focus]:-outline-offset data-[focus]:outline-gray-500 ${className}`}
         value={color}
         onChange={(e) => {
           setColor(e.target.value);
@@ -67,7 +87,7 @@ export const ColorInput = ({ label, className, control, name, ...inputProps }: C
         }}
         {...inputProps}
       />
-      {fieldState.error && <Description className="text-red-600">{fieldState.error.message}</Description>}
+      {fieldState.error && <Description className="text-red-600 text-sm md:text-base mb-1">{fieldState.error.message}</Description>}
       <HexColorPicker
         color={color}
         onChange={(newColor) => {
